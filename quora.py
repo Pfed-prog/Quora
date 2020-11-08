@@ -28,16 +28,20 @@ class Bot:
         sleep(2)
         link = "https://www.quora.com/partners?sort_by={}#questions".format(self.category)
         self.browser.get(link)
-        sleep(2)
+        self.browser.implicitly_wait(2)
         questions = self.browser.find_element_by_id("questions").find_element_by_css_selector("div.paged_list_wrapper").find_elements_by_css_selector("div.QuestionListItem")
-        sleep(3)
+        self.browser.implicitly_wait(3)
         for x in range(10):
+            self.browser.implicitly_wait(2)
             questions[x].find_element_by_css_selector("div.a2a_section").find_element_by_css_selector("span").click()
-            sleep(10)
+            self.browser.implicitly_wait(2)
             a = self.browser.find_elements_by_class_name("q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")
+            self.browser.implicitly_wait(10)
             try:
                 for i in range(25):
+                    self.browser.implicitly_wait(1)
                     a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()
+                    
                 self.browser.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
             except:
                 print('pushing Done')
