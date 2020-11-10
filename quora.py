@@ -1,6 +1,5 @@
 from selenium import webdriver
 from time import sleep
-import argparse
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -54,16 +53,11 @@ class Bot:
             except:
                 self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-e', type=str, help='Email')
-    parser.add_argument('-p', type=str, help='Password')
-    args = parser.parse_args()
 
-    my_bot = Bot(args.e, args.p)
-    my_bot.ask('recent', 0, 10, "window.scrollTo(0, 0)")
-    my_bot.ask('day', 0, 10, "window.scrollTo(0, 0)")
-    my_bot.ask('week', 0, 10, "window.scrollTo(0, 0)")
-    my_bot.ask('recent', 10, 20, "window.scrollTo(0, 6000)")
-    my_bot.ask('day', 10, 20, "window.scrollTo(0, 6000)")
-    my_bot.ask('week', 10, 20, "window.scrollTo(0, 6000)")
+my_bot = Bot('@gmail.com', '')
+my_bot.ask('recent', 0, 10, "window.scrollTo(0, 0)")
+my_bot.ask('day', 0, 10, "window.scrollTo(0, 0)")
+my_bot.ask('week', 0, 10, "window.scrollTo(0, 0)")
+my_bot.ask('recent', 10, 20, "window.scrollTo(0, 6000)")
+my_bot.ask('day', 10, 20, "window.scrollTo(0, 6000)")
+my_bot.ask('week', 10, 20, "window.scrollTo(0, 6000)")
