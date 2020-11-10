@@ -20,6 +20,7 @@ class Bot:
             self.driver.find_element_by_xpath("//input[@placeholder=\'Email\']").send_keys(login)
             self.driver.find_element_by_xpath("//input[@placeholder=\'Password\']").send_keys(password)
             self.driver.find_element_by_xpath("//input[@value=\'Login\']").click()
+            sleep(2)
             WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "root")))
         except:
             self.driver.find_element_by_xpath("//input[@placeholder=\"Your email\"]").send_keys(login)
@@ -52,12 +53,15 @@ class Bot:
                 find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
             except:
                 self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
+    
+    def finish(self):
+        self.driver.close()
 
-
-my_bot = Bot('@gmail.com', '')
+my_bot = Bot('Enter Your Email Here', 'Password')
 my_bot.ask('recent', 0, 10, "window.scrollTo(0, 0)")
 my_bot.ask('day', 0, 10, "window.scrollTo(0, 0)")
 my_bot.ask('week', 0, 10, "window.scrollTo(0, 0)")
 my_bot.ask('recent', 10, 20, "window.scrollTo(0, 6000)")
 my_bot.ask('day', 10, 20, "window.scrollTo(0, 6000)")
 my_bot.ask('week', 10, 20, "window.scrollTo(0, 6000)")
+my_bot.finish()
