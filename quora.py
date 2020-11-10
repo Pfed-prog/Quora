@@ -55,7 +55,7 @@ class Bot:
     def finish(self):
         self.driver.close()
 
-my_bot = Bot('Enter Your Email Here', 'Password')
+my_bot = Bot('Email', 'Password') #Enter Creds Here
 my_bot.ask('recent', 0, 10, "window.scrollTo(0, 0)")
 my_bot.ask('day', 0, 10, "window.scrollTo(0, 0)")
 my_bot.ask('week', 0, 10, "window.scrollTo(0, 0)")
