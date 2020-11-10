@@ -32,8 +32,7 @@ class Bot:
         self.category = category
         self.low = low
         self.high = high
-        self.scroll = scroll     
-        sleep(2)   
+        self.scroll = scroll  
         self.driver.get("https://www.quora.com/partners?sort_by={}#questions".format(category))
         self.driver.execute_script(scroll)
         sleep(3)
@@ -41,7 +40,6 @@ class Bot:
         questions = self.driver.find_element_by_id("questions").find_element_by_class_name("paged_list_wrapper").find_elements_by_class_name("QuestionListItem.partners_question_list_item")    
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "icon_svg-stroke")))
         for x in range(low, high):
-            print(x)
             questions[x].find_element_by_css_selector("div.a2a_section").find_element_by_css_selector("span").click()
             try:
                 WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")))
