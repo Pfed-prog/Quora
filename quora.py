@@ -10,11 +10,7 @@ class Bot:
     def __init__(self, login, password):
         self.login = login
         self.password = password
-        options = webdriver.ChromeOptions()
-        options.add_argument("start-maximized")
-        options.add_argument("disable-infobars")
-        options.add_argument("--disable-extensions")
-        self.driver = webdriver.Chrome(options = options, executable_path=f'chromedriver.exe')
+        self.driver = webdriver.Chrome(executable_path=f'chromedriver.exe')
         self.driver.get('https://www.quora.com')
         try:
             self.driver.find_element_by_xpath("//input[@placeholder=\'Email\']").send_keys(login)
@@ -34,8 +30,22 @@ class Bot:
         self.high = high
         self.scroll = scroll  
         self.driver.get("https://www.quora.com/partners?sort_by={}#questions".format(category))
-        self.driver.execute_script(scroll)
-        sleep(3)
+        
+        if scroll == 0:
+            sleep(5)
+        elif scroll == 1:
+            sleep(4)
+            self.driver.execute_script("window.scrollTo(0, 6000)")
+            sleep(3)
+        elif scroll == 2:
+            sleep(2)
+            self.driver.execute_script("window.scrollTo(0, 6000)")
+            sleep(5)
+            self.driver.execute_script("window.scrollTo(0, 6000)")
+            sleep(5)
+        else:
+            print("number of scrolls - invalid")
+
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "questions")))      
         questions = self.driver.find_element_by_id("questions").find_element_by_class_name("paged_list_wrapper").find_elements_by_class_name("QuestionListItem.partners_question_list_item")    
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "icon_svg-stroke")))
@@ -52,14 +62,16 @@ class Bot:
             except:
                 self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
     
+
     def finish(self):
         self.driver.close()
 
-my_bot = Bot('Email', 'Password') #Enter Creds Here
-my_bot.ask('recent', 0, 10, "window.scrollTo(0, 0)")
-my_bot.ask('day', 0, 10, "window.scrollTo(0, 0)")
-my_bot.ask('week', 0, 10, "window.scrollTo(0, 0)")
-my_bot.ask('recent', 10, 20, "window.scrollTo(0, 6000)")
-my_bot.ask('day', 10, 20, "window.scrollTo(0, 6000)")
-my_bot.ask('week', 10, 20, "window.scrollTo(0, 6000)")
+my_bot = Bot('', '') #Enter Creds Here
+my_bot.ask('recent', 0, 10, 0)
+my_bot.ask('day', 0, 10, 0)
+my_bot.ask('week', 0, 10, 0)
+#my_bot.ask('recent', 10, 20, 1)
+#my_bot.ask('day', 10, 20, 1)
+#my_bot.ask('week', 10, 20, 1)
+#my_bot.ask('day', 20, 30, 2)
 my_bot.finish()
