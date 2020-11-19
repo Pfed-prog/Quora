@@ -16,6 +16,7 @@ class Bot:
         try: 
             self.driver.find_element_by_xpath("//input[@placeholder=\'Email\']").send_keys(login)
             self.driver.find_element_by_xpath("//input[@placeholder=\'Password\']").send_keys(password)
+            sleep(2) #fixed bug when the login button was clicked too early 
             self.driver.find_element_by_xpath("//input[@value=\'Login\']").click()
             sleep(2) #needed for welcome page to properly initialize
             WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "root"))) # for welcome to load
