@@ -12,43 +12,59 @@ class Bot:
         self.password = password
         self.driver = webdriver.Chrome(executable_path=f'chromedriver.exe') #loads webdriver
         self.driver.get('https://www.quora.com') #opens quora website
-        try:
+        #quora has two different login pages which makes first try invalid from time to time
+        try: 
             self.driver.find_element_by_xpath("//input[@placeholder=\'Email\']").send_keys(login)
             self.driver.find_element_by_xpath("//input[@placeholder=\'Password\']").send_keys(password)
             self.driver.find_element_by_xpath("//input[@value=\'Login\']").click()
-            sleep(2)
-            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "root")))
+            sleep(2) #needed for welcome page to properly initialize
+            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "root"))) # for welcome to load
         except:
             self.driver.find_element_by_xpath("//input[@placeholder=\"Your email\"]").send_keys(login)
             self.driver.find_element_by_xpath("//input[@placeholder=\"Your password\"]").send_keys(password)
             self.driver.find_element_by_xpath("//button[@tabindex=\"4\"]").click()
+            sleep(2)
             WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "root")))
 
-    def ask(self, category, low, high, scroll):
-        self.category = category
-        self.low = low
-        self.high = high
-        self.scroll = scroll  
-        self.driver.get("https://www.quora.com/partners?sort_by={}#questions".format(category))
-        
+    def ask(self, category, scroll):
+        self.category = category #passes the category name
+        self.scroll = scroll #passes the number of scrolls on the page: 1 scroll =10 questions
+        self.driver.get("https://www.quora.com/partners?sort_by={}#questions".format(category))#loads the partners page based on the category passed
+        low = 0
+        high = 10
+        #scrolls to load questions; number of scrolls directly targets the range of questions to request (more efficient way fails due to site mechanics)
         if scroll == 0:
             sleep(5)
         elif scroll == 1:
             sleep(4)
             self.driver.execute_script("window.scrollTo(0, 6000)")
             sleep(3)
+            low = 10
+            high = 20
         elif scroll == 2:
             sleep(2)
             self.driver.execute_script("window.scrollTo(0, 6000)")
             sleep(5)
             self.driver.execute_script("window.scrollTo(0, 6000)")
             sleep(5)
+            low = 20
+            high = 30
+        elif scroll == 3:
+            sleep(2)
+            self.driver.execute_script("window.scrollTo(0, 6000)")
+            sleep(5)
+            self.driver.execute_script("window.scrollTo(0, 6000)")
+            sleep(5)
+            self.driver.execute_script("window.scrollTo(0, 12000)")
+            sleep(5)
+            low = 30
+            high = 40
         else:
             print("number of scrolls - invalid")
 
-        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "questions")))      
+        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.ID, "questions"))) #confirms loading of questions  
         questions = self.driver.find_element_by_id("questions").find_element_by_class_name("paged_list_wrapper").find_elements_by_class_name("QuestionListItem.partners_question_list_item")    
-        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "icon_svg-stroke")))
+        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "icon_svg-stroke")))#saves the questions
         for x in range(low, high):
             try:
                 questions[x].find_element_by_css_selector("div.a2a_section").find_element_by_css_selector("span").click()
@@ -74,6 +90,22 @@ class Bot:
                         find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
                 except:
                     self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
+                        self.driver.execute_script("window.scrollTo(0, 500)")#not sure if redundant
+                        for i in range(10):
+                            a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()#pushes blue + button
+                        find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()#clicks done
+                    except:
+                        topics = self.driver.find_elements_by_class_name("q-click-wrapper.qu-display--block.qu-tapHighlight--white.qu-cursor--pointer")#saves topics
+                        topics[2].find_element_by_class_name("q-box.qu-py--tiny.qu-hover--bg--undefined.qu-tapHighlight--none").click()#changes topic when there is no suggestions
+                        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")))
+                        a = self.driver.find_elements_by_class_name("q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")
+                        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span")))
+                        self.driver.execute_script("window.scrollTo(0, 500)")#not sure if redundant
+                        for i in range(10):
+                            a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()#pushes blue + button
+                        find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()#clicks done
+                except:
+                    self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()#clicks done
             except:
                 x+=1
     
@@ -81,11 +113,12 @@ class Bot:
         self.driver.close()
 
 my_bot = Bot('Qwerty@gmail.com', 'Password') #Enter Creds Here
-my_bot.ask('recent', 0, 10, 0)
-my_bot.ask('day', 0, 10, 0)
-my_bot.ask('week', 0, 10, 0)
-my_bot.ask('recent', 10, 20, 1)
-my_bot.ask('day', 10, 20, 1)
-my_bot.ask('week', 10, 20, 1)
-my_bot.ask('day', 20, 30, 2)
+my_bot.ask('recent', 0)
+my_bot.ask('day', 0)
+my_bot.ask('week', 0)
+my_bot.ask('recent', 1)
+my_bot.ask('day', 1)
+my_bot.ask('week', 1)
+my_bot.ask('day', 2)
+my_bot.ask('week', 2)
 my_bot.finish()
