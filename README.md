@@ -23,5 +23,10 @@ Selenium:
 ```bash
 pip3 install selenium
 ```
+Pip on Debian:
+```bash
+sudo apt-get install python3-pip -y
+```
 webdrivers for Firefox:
 https://github.com/mozilla/geckodriver/releases/tag/v0.28.0
+
