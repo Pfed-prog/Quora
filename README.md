@@ -16,17 +16,16 @@ Edit the line in the script with your password and email:
 my_bot = Bot('Email', 'Password')
 ```
 # Tested on
-Windows 10 64-bit using Chrome browser &&
-Kali Linux 20.20.4 32-bit
+Windows 10 64-bit using Chrome browser && Firefox ESR on Kali Linux 20.20.4 32-bit
 # Installation
 Selenium:
 ```bash
 pip3 install selenium
 ```
-Pip on Debian:
+Pip3 on Debian:
 ```bash
 sudo apt-get install python3-pip -y
 ```
-webdrivers for Firefox:
+Webdrivers for Firefox:
 https://github.com/mozilla/geckodriver/releases/tag/v0.28.0
 
