@@ -89,22 +89,6 @@ class Bot:
                             a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()
                         find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
                 except:
-                    self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
-                        self.driver.execute_script("window.scrollTo(0, 500)")#not sure if redundant
-                        for i in range(10):
-                            a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()#pushes blue + button
-                        find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()#clicks done
-                    except:
-                        topics = self.driver.find_elements_by_class_name("q-click-wrapper.qu-display--block.qu-tapHighlight--white.qu-cursor--pointer")#saves topics
-                        topics[2].find_element_by_class_name("q-box.qu-py--tiny.qu-hover--bg--undefined.qu-tapHighlight--none").click()#changes topic when there is no suggestions
-                        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")))
-                        a = self.driver.find_elements_by_class_name("q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")
-                        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span")))
-                        self.driver.execute_script("window.scrollTo(0, 500)")#not sure if redundant
-                        for i in range(10):
-                            a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()#pushes blue + button
-                        find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()#clicks done
-                except:
                     self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()#clicks done
             except:
                 x+=1
