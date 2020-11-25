@@ -11,6 +11,7 @@ class Bot:
         self.login = login
         self.password = password
         self.driver = webdriver.Chrome(executable_path=f'chromedriver.exe') #loads webdriver
+        #self.driver = webdriver.Firefox(executable_path=f'geckodriver') #for debian
         self.driver.get('https://www.quora.com') #opens quora website
         #quora has two different login pages which makes first try invalid from time to time
         try: 
@@ -84,7 +85,6 @@ class Bot:
                         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span")))
                         for i in range(10):
                             a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()
-                        find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click()
                 except:
                     self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click() #clicks done
             except:
