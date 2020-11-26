@@ -68,32 +68,40 @@ class Bot:
         questions = self.driver.find_element_by_id("questions").find_element_by_class_name("paged_list_wrapper").find_elements_by_class_name("QuestionListItem.partners_question_list_item")    
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "icon_svg-stroke"))) #saves the questions
         for x in range(low, high):
-            try:
+            try:#collects 10 questions
                 questions[x].find_element_by_css_selector("div.a2a_section").find_element_by_css_selector("span").click()
                 try:
-                    try:    
+                    try:
+                        try:
+                            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")))
+                            a = self.driver.find_elements_by_class_name("q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")
+                            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span")))#collects users
+                            for i in range(25):
+                                a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()
+                        except:
+                            topics = self.driver.find_elements_by_class_name("q-click-wrapper.qu-display--block.qu-tapHighlight--white.qu-cursor--pointer")
+                            topics[2].find_element_by_class_name("q-box.qu-py--tiny.qu-hover--bg--undefined.qu-tapHighlight--none").click() #changes topic when there is no suggestions
+                            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")))
+                            a = self.driver.find_elements_by_class_name("q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")
+                            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span")))
+                            for i in range(25):
+                                a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()
+                    except:        
+                        topics[3].find_element_by_class_name("q-box.qu-py--tiny.qu-hover--bg--undefined.qu-tapHighlight--none").click() #changes topic when there is no suggestions
                         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")))
                         a = self.driver.find_elements_by_class_name("q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")
                         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span")))
-                        for i in range(10):
+                        for i in range(25):
                             a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()
-                    except:
-                        topics = self.driver.find_elements_by_class_name("q-click-wrapper.qu-display--block.qu-tapHighlight--white.qu-cursor--pointer")
-                        topics[2].find_element_by_class_name("q-box.qu-py--tiny.qu-hover--bg--undefined.qu-tapHighlight--none").click() #changes topic when there is no suggestions
-                        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")))
-                        a = self.driver.find_elements_by_class_name("q-box.qu-py--small.qu-borderBottom.qu-hover--bg--undefined.qu-tapHighlight--none")
-                        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span")))
-                        for i in range(10):
-                            a[i].find_element_by_class_name("q-box.qu-flex--none.qu-display--inline-flex.qu-ml--medium").find_element_by_css_selector("span").click()
-                except:
+                except:#in case opens question, this closes it
                     self.driver.find_element_by_class_name("q-text.qu-ellipsis.qu-whiteSpace--nowrap").click() #clicks done
-            except:
+            except:#in case not clickable questions - switches to another
                 x+=1
     
     def finish(self): #closes the browser
         self.driver.close()
 
-my_bot = Bot('Qwerty@gmail.com', 'Password') #Enter Creds Here
+my_bot = Bot('Qwerty@mail.com', 'qwerty') #Enter Creds Here
 my_bot.ask('recent', 0)
 my_bot.ask('day', 0)
 my_bot.ask('week', 0)
